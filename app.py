@@ -8,31 +8,14 @@ API_ENDPOINT = "https://api.onlinewardleymaps.com/v1/maps/fetch?id="
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 model = "gpt-4"
 
-html_temp = """
-                <div style="background-color:{};padding:1px">
-                
-                </div>
-                """
-
-scrollable_container_style = """
-    <style>
-        .scrollable-container {
-            max-height: 600px;
-            overflow-y: auto;
-        }
-    </style>
-"""
-
 st.set_page_config(page_title="Chat with your FPN Wardley Map", layout="wide")
-st.markdown(scrollable_container_style, unsafe_allow_html=True)
-
 st.sidebar.title("Chat with Map")
-st.sidebar.markdown(html_temp.format("rgba(55, 53, 47, 0.16)"),unsafe_allow_html=True)
-st.sidebar.markdown("Developed by Mark Craddock", unsafe_allow_html=True)
+st.divider()
+st.sidebar.markdown("Developed by Mark Craddock")
 st.sidebar.markdown("Current Version: 0.1")
 st.sidebar.markdown("Using GPT-4 API")
 st.sidebar.markdown("Early release\n\nMinimal testing\n\nMay run out of OpenAI credits")
-st.sidebar.markdown(html_temp.format("rgba(55, 53, 47, 0.16)"),unsafe_allow_html=True)
+st.divider()
 st.sidebar.markdown("## Enter Map ID")
     
 def get_initial_message():
@@ -137,10 +120,10 @@ with col1:
     query = st.text_input("Question: ", value="Suggest 5 questions you can answer about this Wardley Map?", key="input")
 
 map_id = st.sidebar.text_input("Enter the ID of the Wardley Map:", value="gTTfD4r2mORudVFKge")    
-st.sidebar.markdown(html_temp.format("rgba(55, 53, 47, 0.16)"),unsafe_allow_html=True)
+st.divider()
 st.sidebar.write(f"Total Tokens Used: {st.session_state['total_tokens_used']}")
 st.sidebar.write(f"Total Cost: ${st.session_state['total_tokens_used'] * 0.06 / 1000}")
-st.sidebar.markdown(html_temp.format("rgba(55, 53, 47, 0.16)"),unsafe_allow_html=True)
+st.divider()
     
 if st.session_state.get('current_map_id') != map_id:
     del st.session_state['messages']
@@ -165,7 +148,7 @@ if 'map_text' in st.session_state:
 
 with col1:
     query_button = st.button("Ask Question")
-    st.markdown(html_temp.format("rgba(55, 53, 47, 0.16)"),unsafe_allow_html=True)
+    st.divider()
     if query_button and query:
         with st.spinner("Thinking... this can take a while..."):
             messages = st.session_state['messages']
@@ -182,7 +165,7 @@ with col1:
                 
 with col2:
     st.markdown("## Structured Prompts")
-    st.markdown(html_temp.format("rgba(55, 53, 47, 0.16)"),unsafe_allow_html=True)
+    st.divider()
     if st.session_state["generated"]:
         for text in st.session_state["generated"]:
             sentences = text.strip().split("\n")
@@ -208,12 +191,11 @@ with col2:
 
 with col3:
     st.markdown("## Output Document")
-    st.markdown(html_temp.format("rgba(55, 53, 47, 0.16)"),unsafe_allow_html=True)
-    st.markdown('<div class="scrollable-container">', unsafe_allow_html=True)  # Add this line to create a scrollable container
+    st.divider()
     if st.session_state['generated']:
         download_doc_str = []
         for i in range(len(st.session_state['generated'])):
-            st.markdown(html_temp.format("rgba(55, 53, 47, 0.16)"),unsafe_allow_html=True)
+            st.divider()
             st.write(st.session_state['generated'][i])
 
         for i in range(len(st.session_state['generated']) - 1, -1, -1):    
@@ -222,7 +204,6 @@ with col3:
         if download_doc_str:
             download_doc_str = '\n'.join(download_doc_str)
             st.download_button('Download', download_doc_str)
-    st.markdown('</div>', unsafe_allow_html=True)  # Add this line to close the scrollable container
             
 with col1:
     if st.session_state['generated']:
