@@ -1,6 +1,9 @@
 # Importing required packages
 from streamlit_chat import message
 import streamlit as st
+from langchain.chat_models import ChatOpenAI
+from langchain.schema import AIMessage, HumanMessage, SystemMessage
+from langchain.callbacks import get_openai_callback
 import requests
 import openai
 
@@ -81,8 +84,7 @@ def get_initial_message():
     return messages
 
 def get_chatgpt_response(messages, model):
-    OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
-    
+
     # Convert messages to corresponding SystemMessage, HumanMessage, and AIMessage objects
     new_messages = []
     for message in messages:
