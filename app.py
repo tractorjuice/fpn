@@ -9,7 +9,14 @@ import openai
 
 API_ENDPOINT = "https://api.onlinewardleymaps.com/v1/maps/fetch?id="
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
-model = "gpt-4"
+#MODEL = "gpt-3"
+#MODEL = "gpt-3.5-turbo"
+#MODEL = "gpt-3.5-turbo-0613"
+#MODEL = "gpt-3.5-turbo-16k"
+#MODEL = "gpt-3.5-turbo-16k-0613"
+MODEL = "gpt-4"
+#MODEL = "gpt-4-0613"
+#MODEL = "gpt-4-32k-0613"
 
 st.set_page_config(page_title="Chat with your FPN Wardley Map", layout="wide")
 st.sidebar.title("Chat with Map")
@@ -180,7 +187,7 @@ with col1:
             messages = st.session_state['messages']
             messages = update_chat(messages, "user", query)
             try:
-                content, response = get_chatgpt_response(messages, model)
+                content, response = get_chatgpt_response(messages, MODEL)
                 st.session_state.tokens_used = response.total_tokens
                 st.session_state.total_tokens_used = st.session_state.total_tokens_used + st.session_state.tokens_used
                 messages = update_chat(messages, "assistant", content)
@@ -206,7 +213,7 @@ with col2:
                             messages = st.session_state['messages']
                             messages = update_chat(messages, "user", stripped_sentence)
                             try:
-                                content, response = get_chatgpt_response(messages, model)
+                                content, response = get_chatgpt_response(messages, MODEL)
                                 st.session_state.tokens_used = response.total_tokens
                                 st.session_state.total_tokens_used = st.session_state.total_tokens_used + st.session_state.tokens_used
                                 messages = update_chat(messages, "assistant", content)
